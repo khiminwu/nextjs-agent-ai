@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+// import Image from "next/image";
 import api from "./utils/axios";
 import { useEffect, useState } from 'react'
 
