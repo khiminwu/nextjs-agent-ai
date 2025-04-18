@@ -10,9 +10,12 @@ export default function ViewportFixWrapper({ children }: { children: React.React
 
     setAppHeight();
     window.addEventListener("resize", setAppHeight);
-
     return () => window.removeEventListener("resize", setAppHeight);
   }, []);
 
-  return <div className="full-height bg-gray-100">{children}</div>;
+  return (
+    <div className="full-height flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-300">
+      {children}
+    </div>
+  );
 }
