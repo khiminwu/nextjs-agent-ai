@@ -5,8 +5,11 @@ import { useEffect } from "react";
 export default function ViewportFixWrapper({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const setAppHeight = () => {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--app-height', `${vh * 100}px`);
+    //   const vh = window.innerHeight * 0.01;
+    //   document.documentElement.style.setProperty('--app-height', `${vh * 100}px`);
+
+      const vh = (window.visualViewport?.height || window.innerHeight) * 0.01;
+      document.documentElement.style.setProperty('--app-height', `${vh}px`);
     };
 
     setAppHeight();
@@ -20,7 +23,7 @@ export default function ViewportFixWrapper({ children }: { children: React.React
   }, []);
 
   return (
-    <div className="full-height flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-300">
+    <div className="h-[calc(var(--vh,1vh)_*100)] flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-300">
       {children}
     </div>
   );
