@@ -2,7 +2,7 @@
 "use client";
 // import Image from "next/image";
 import api from "./utils/axios";
-import { useEffect, useState } from 'react'
+import { useEffect, useState,useRef } from 'react'
 
 type Message ={
   content: string;
@@ -15,7 +15,7 @@ export default function Home() {
   const [uid, setUid] = useState('');
   const [prompt, setPrompt] = useState("");
   const [thinking, setThinking] = useState(false);
-
+  const bottomRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const uid = localStorage.getItem("uid");
     const msgs: string = localStorage.getItem("messages") || "";
@@ -80,6 +80,10 @@ export default function Home() {
     // setSubmitted(true);
   };
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]); 
+
   return (
     <div className="container mx-auto h-[100vh overflow-hidden]">
       <div className="overflow-y-auto h-[calc(100vh-130px)] my-6 p-6 bg-gray-100/70 rounded-2xl text-gray-500">
@@ -102,8 +106,9 @@ export default function Home() {
         </div>
         
         {thinking && (
-          <p className="text-4xl">🤔</p>
+          <p className="text-3xl inline-flex items-center animate-pulse gap-2 relative">🤔 <span className="text-xs absolute left-[100%] -top-3 bg-black text-white px-2 py-1 rounded-full text-nowrap">. . .</span></p>
         )} 
+        <div ref={bottomRef} />
       </div>
       <div className="flex pb-4">
         <div className="w-full">
