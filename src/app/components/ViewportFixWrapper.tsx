@@ -23,7 +23,7 @@ export default function ViewportFixWrapper({ children }: { children: React.React
   }, []);
 
   return (
-    <div className="h-[calc(var(--vh,1vh)_*100)] flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-300">
+    <div className="h-[calc(var(--app-height,1vh)_*100)] flex items-center justify-center">
       {children}
     </div>
   );
