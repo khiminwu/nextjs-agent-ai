@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --app-height: 100vh;
 }
 
 @theme inline {
@@ -27,7 +28,7 @@ body {
 
 .full-height {
   height: var(--app-height, 100vh);
-  overflow: hidden;
+  /* overflow: hidden; */
   /* display: flex; */
   /* align-items: center; */
   /* justify-content: center; */
