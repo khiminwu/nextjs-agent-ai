@@ -1,17 +1,24 @@
+
 "use client";
 // import Image from "next/image";
 import api from "./utils/axios";
 import { useEffect, useState } from 'react'
 
+type Message ={
+  content: string;
+  type: string;
+}
+
+
 export default function Home() {
-  const [message, setMessage] = useState([])
+  const [message, setMessage] = useState<Message[]>([])
   const [uid, setUid] = useState('');
   const [prompt, setPrompt] = useState("");
   const [thinking, setThinking] = useState(false);
 
   useEffect(() => {
     const uid = localStorage.getItem("uid");
-    const msgs:any = localStorage.getItem("messages");
+    const msgs: string = localStorage.getItem("messages") || "";
     // console.log(uid,'uid')
     if (uid) {
       setUid(uid)
@@ -23,8 +30,9 @@ export default function Home() {
     }
 
     if(msgs){
-      console.log(JSON.parse(msgs))
-      setMessage(JSON.parse(msgs)||[])
+      const data:Message[] = JSON.parse(msgs);
+      // console.log(JSON.parse(msgs))
+      setMessage(data||[])
     }
     
   }, []);
@@ -52,13 +60,13 @@ export default function Home() {
     })
   }
 
-  const setMsg = (data:any)=>{
+  const setMsg = (data:Message[])=>{
     // const new_msg:any = {
     //   content:data?.content,
     //   type:data?.type
     // }
     // console.log(message,'message')
-    let new_msg:any = [...message,...data];
+    const new_msg:Message[] = [...message,...data];
     // new_msg.push(data);
     // console.log(new_msg,data,'new_msg')
     setMessage(new_msg)
@@ -84,7 +92,7 @@ export default function Home() {
         )}
 
         <div className="relative flex flex-col h-auto mb-8 gap-8">
-          {message && (message||[]).map((item:any,key)=>(
+          {message && (message||[]).map((item,key)=>(
             <div key={key} className={`flex ${item?.type=='human'?'justify-end':''}`}>
               <div className={`${item?.type=='human'?'bg-black text-white px-4 py-1 flex rounded-full':''}`}>
                 <p dangerouslySetInnerHTML={{ __html: item?.content }}></p>
