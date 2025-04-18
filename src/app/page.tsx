@@ -86,7 +86,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto h-[100vh overflow-hidden]">
-      <div className="overflow-y-auto h-[calc(100vh-130px)] my-6 p-6 bg-gray-100/70 rounded-2xl text-gray-500">
+      <div className="overflow-y-auto h-[calc(100vh-130px)] my-6 p-6 bg-gray-200 rounded-2xl text-gray-500">
       {/* <p>{uid}</p> */}
         {!thinking && message.length==0 && (
           <>
@@ -112,10 +112,10 @@ export default function Home() {
       </div>
       <div className="flex pb-4">
         <div className="w-full">
-          <form onSubmit={handleSubmit} className="flex gap-0 w-full bg-gray-100">
+          <form onSubmit={handleSubmit} className="flex gap-0 w-full bg-gray-200 px-4 py-4">
             <input type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Ask Anything..." className="grow px-4"/>
-            <button type="submit" className="bg-black text-white px-8 py-2 cursor-pointer hover:bg-gray-600">&#8627;</button>
+          placeholder="Ask Anything..." className="grow px-4 text-black"/>
+            <button type="submit" className="bg-black text-white rounded-full h-8 w-8 items-center justify-center flex cursor-pointer hover:bg-gray-600">&#8627;</button>
             </form>
         </div>
       </div>

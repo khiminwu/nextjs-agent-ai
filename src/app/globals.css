@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.full-height {
+  height: var(--app-height, 100vh);
+  overflow: hidden;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+}
