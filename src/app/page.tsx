@@ -85,7 +85,7 @@ export default function Home() {
   }, [message]); 
 
   return (
-    <div className="container mx-auto h-[100vh overflow-hidden]">
+    <div className="container mx-auto h-[100vh overflow-hidden] px-4">
       <div className="overflow-y-auto h-[calc(100vh-130px)] my-6 p-6 bg-gray-200 rounded-2xl text-gray-500">
       {/* <p>{uid}</p> */}
         {!thinking && message.length==0 && (
