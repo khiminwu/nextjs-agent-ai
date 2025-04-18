@@ -23,7 +23,7 @@ export default function ViewportFixWrapper({ children }: { children: React.React
   }, []);
 
   return (
-    <div className="h-[calc(var(--app-height,1vh)_*100)] flex items-center justify-center">
+    <div className="h-[calc(var(--app-height,1vh)_*100)] flex justify-center">
       {children}
     </div>
   );
