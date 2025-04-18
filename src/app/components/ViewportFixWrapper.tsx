@@ -5,12 +5,18 @@ import { useEffect } from "react";
 export default function ViewportFixWrapper({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const setAppHeight = () => {
-      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--app-height', `${vh * 100}px`);
     };
 
     setAppHeight();
-    window.addEventListener("resize", setAppHeight);
-    return () => window.removeEventListener("resize", setAppHeight);
+    window.addEventListener('resize', setAppHeight);
+    window.addEventListener('orientationchange', setAppHeight);
+
+    return () => {
+      window.removeEventListener('resize', setAppHeight);
+      window.removeEventListener('orientationchange', setAppHeight);
+    };
   }, []);
 
   return (
