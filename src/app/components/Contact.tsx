@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState,useRef } from 'react';
+import { useEffect,useRef } from 'react';
 
 export default function Contact() {
     
@@ -12,8 +12,6 @@ export default function Contact() {
     const handleScroll = () => {
       const currentY = window.scrollY;
       
-      const windowHeight = window.innerHeight;
-      const bottomReached = currentY >= totalHeight - windowHeight - 10;
       const topReached = currentY <= 5;
       
       

@@ -11,7 +11,7 @@ export default function Home() {
 
     const lastScrollY = useRef(0);
     const onChangePage = useRef(false);
-    const totalHeight =text.length *  scrollThreshold *2;
+    const totalHeight = text.length *  scrollThreshold *2;
 
     // const [deltaScroll,setDeltaScroll] = useState(0);
     // console.log(totalHeight,chars.length*5,'totalHeight')
