@@ -8,7 +8,7 @@ const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   const [visibleChars, setVisibleChars] = useState(-1);
     const chars = text.split('');
     const threshold = 50;
-    const hasNavigated = useRef(false);
+    
     
     const [deltaScroll,setDeltaScroll] = useState(0);
 

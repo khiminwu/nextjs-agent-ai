@@ -9,6 +9,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
       const item = localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
     } catch (error) {
+      console.log(error)
       console.error('Error reading localStorage key', key)
       return initialValue
     }
@@ -18,6 +19,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     try {
       localStorage.setItem(key, JSON.stringify(value))
     } catch (error) {
+      console.log(error)
       console.error('Error setting localStorage key', key)
     }
   }, [key, value])

@@ -1,24 +1,19 @@
 
 "use client";
 // import Image from "next/image";
-import api from "./utils/axios";
-import { useEffect, useState,useRef } from 'react'
-import { createCustomEvent } from '@/app/utils/createCustomEvent';
+// import api from "./utils/axios";
+import { useEffect, useState } from 'react'
+
 import Scene from '@/app/components/Ursa/Scene';
 import About from "@/app/components/About";
 
-type Message ={
-  content: string;
-  type: string;
-}
-
 
 export default function Home() {
-  const [isLanding,setIsLanding] = useState(false);
+  // const [isLanding,setIsLanding] = useState(false);
   const [hash,setHash] = useState('');
   useEffect(() => {
     window.addEventListener('onPageChangeFinished', (e) => {
-      
+      console.log(e)
       handleHashChange()
       // Trigger your explode animation or navigation
     });
@@ -36,10 +31,10 @@ export default function Home() {
   const handleHashChange = () => {
     const currentHash = window.location.hash.replace(/^#/, '').toLowerCase();
     
-    if(!currentHash || currentHash==''){
-      setIsLanding(true)
+    // if(!currentHash || currentHash==''){
+    //   setIsLanding(true)
       
-    }
+    // }
       setHash(currentHash)  
   };
 
@@ -47,7 +42,7 @@ export default function Home() {
   const clickExplore=()=>{
     // const event = createCustomEvent('exploreClicked', {});
     // window.dispatchEvent(event);
-    setIsLanding(false);
+    // setIsLanding(false);
     window.location.hash = 'about';
   }
 

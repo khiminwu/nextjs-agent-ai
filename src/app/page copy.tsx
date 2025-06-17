@@ -2,15 +2,11 @@
 "use client";
 // import Image from "next/image";
 import api from "./utils/axios";
-import { useEffect, useState,useRef } from 'react'
+import { useEffect, useState } from 'react'
 // import SVGParticles from '@/components/SVGParticles';
 import SVGParticles from './components/Particles';
 import { useUserStore } from './store/useUserStore'
 
-type Message ={
-  content: string;
-  type: string;
-}
 
 
 export default function Home() {
