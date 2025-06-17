@@ -21,8 +21,7 @@ export default function Contact() {
     const handleScroll = () => {
       if(onChangePage.current) return false;
       const scrollTop = scrollEl.scrollTop;
-      const clientHeight = scrollEl.clientHeight;
-      const scrollHeight = scrollEl.scrollHeight;
+      
 
       
       const topReached = scrollTop <= 10;
