@@ -15,30 +15,48 @@ const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
     const handleScroll = (e: WheelEvent) => {
       const delta = e.deltaY;
-        
-      // Clear the previous timeout on new scroll
-      
-
-    // Set a new timeout to reset deltaScroll after 2 seconds of inactivity
       
       if (delta > 0) {
         // let prev = visibleChars;
         setVisibleChars((prev) => Math.min(prev + 1, text.length));
-        // setDeltaScroll(1);
         setDeltaScroll((prev) => prev+1);
-        // console.log(visibleChars,'scroll')
         
       } else {
         
         setDeltaScroll((prev) => Math.max(prev - 1, 0));
         setVisibleChars((prev) => Math.max(prev - 1, -1));
-      }
-
-       
+      } 
     };
 
+    let touchStartY = 0;
+  let touchEndY = 0;
+
+  const handleTouchStart = (e: TouchEvent) => {
+    touchStartY = e.changedTouches[0].screenY;
+  };
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    touchEndY = e.changedTouches[0].screenY;
+    const deltaY = touchStartY - touchEndY;
+
+    if (deltaY > 50) {
+      setVisibleChars((prev) => Math.min(prev + 1, text.length));
+      setDeltaScroll((prev) => prev+1);
+    } else if (deltaY < -50) {
+       setDeltaScroll((prev) => Math.max(prev - 1, 0));
+    setVisibleChars((prev) => Math.max(prev - 1, -1));
+    }
+  };
+
     window.addEventListener('wheel', handleScroll);
-    return () => window.removeEventListener('wheel', handleScroll);
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+        window.removeEventListener('wheel', handleScroll);
+        window.removeEventListener('touchstart', handleTouchStart);
+        window.removeEventListener('touchend', handleTouchEnd);
+    }
   }, []);
 
 
@@ -59,14 +77,6 @@ const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
       }, 2000); // 2 seconds
 
   }, [deltaScroll, visibleChars, text.length]);
-//   useEffect(()=>{
-//       console.log('scroll');
-//      if(visibleChars>=text.length){
-//         deltaScroll +=1;
-//         console.log('scroll',deltaScroll,visibleChars,text.length)
-//         // window.location.hash = 'service';
-//       }
-//   },[visibleChars])
 
 
 
