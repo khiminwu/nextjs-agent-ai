@@ -26,7 +26,7 @@ export default function About(scene,mount,mouse,camera,renderer) {
 
             points = new THREE.Points(geometry, material);
             console.log(getTopY(camera),'getTopY')
-            points.position.y=window.innerHeight/2
+            points.position.y=150
             points.visible=false;
             scene.add(points);
         
@@ -109,7 +109,7 @@ export default function About(scene,mount,mouse,camera,renderer) {
 
         window.addEventListener('resize', () => {
             console.log(window.innerHeight/2,'getTopY')
-            points.position.y = window.innerHeight/2
+            points.position.y = 150
         });
 
     })

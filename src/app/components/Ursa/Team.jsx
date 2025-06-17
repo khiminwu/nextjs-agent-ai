@@ -27,7 +27,7 @@ export default function Service(scene,mount,mouse,camera,renderer) {
          
 
             points = new THREE.Points(geometry, material);
-            points.position.y=450
+            points.position.y=150
             points.visible=false;
             scene.add(points);
         
