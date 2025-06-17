@@ -3,12 +3,6 @@ import { useEffect, useState,useRef } from 'react';
 
 export default function Works() {
     
-    const [visibleChars, setVisibleChars] = useState(-1);
-    
-    const scrollThreshold = 5;
-
-    const lastScrollY = useRef(0);
-    const onChangePage = useRef(false);
     const totalHeight =1000;
     const lastHash = useRef<string | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
