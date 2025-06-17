@@ -49,15 +49,15 @@ export default function Home() {
 
   return (
     <div className="flex justify-center">
-      <p className="fixed">page : {hash}</p>
+      {/* <p className="fixed">page : {hash}</p> */}
       <div className="fixed w-[100vw] h-[100vh] top-0 left-0">
         <Scene/>
       </div>
       {hash=='' ? (
         <div className="w-[100vw] h-[100vh] absolute z-[10] top-0 left-0">
-          <div className="absolute top-[50%] w-full justify-center flex flex-col text-center p-6 fadein delay opacity-0">
-            <h2 className="text-sm md:text-3xl font-bold mt-24">Your North Star in Digital Transformation</h2>
-            <a onClick={clickExplore} className={`text-sm md:text-lg cursor-pointer hover:opacity-50 mt-6`}>EXPLORE</a>
+          <div className="absolute top-[50%] h-[50%] mt-2 w-full justify-between flex flex-col text-center p-6 fadein delay opacity-0">
+            <h2 className="text-2xl md:text-3xl font-bold">Your North Star in Digital Transformation</h2>
+            <a onClick={clickExplore} className={`text-sm md:text-lg cursor-pointer hover:opacity-50 mb-12 md:mb-4`}>EXPLORE</a>
           </div>
         </div>
       ):(

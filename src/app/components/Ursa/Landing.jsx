@@ -87,6 +87,7 @@ export default function Landing(scene,mount,mouse,camera,renderer,onClickExplore
         });
 
         points = new THREE.Points(geometry, material);
+        points.position.y=50
         scene.add(points);
         
        
