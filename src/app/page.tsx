@@ -3,6 +3,9 @@
 // import Image from "next/image";
 import api from "./utils/axios";
 import { useEffect, useState,useRef } from 'react'
+import { createCustomEvent } from '@/app/utils/createCustomEvent';
+import Scene from '@/app/components/Ursa/Scene';
+import About from "@/app/components/About";
 
 type Message ={
   content: string;
@@ -11,114 +14,66 @@ type Message ={
 
 
 export default function Home() {
-  const [message, setMessage] = useState<Message[]>([])
-  const [uid, setUid] = useState('');
-  const [prompt, setPrompt] = useState("");
-  const [thinking, setThinking] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const [isLanding,setIsLanding] = useState(false);
+  const [hash,setHash] = useState('');
   useEffect(() => {
-    const uid = localStorage.getItem("uid");
-    const msgs: string = localStorage.getItem("messages") || "";
-    // console.log(uid,'uid')
-    if (uid) {
-      setUid(uid)
-      console.log("Username from localStorage:", name);
-    }else{
-      const uuid = crypto.randomUUID();
-      setUid(uuid)
-      localStorage.setItem("uid", uuid);
-    }
+    window.addEventListener('onPageChangeFinished', (e) => {
+      
+      handleHashChange()
+      // Trigger your explode animation or navigation
+    });
 
-    if(msgs){
-      const data:Message[] = JSON.parse(msgs);
-      // console.log(JSON.parse(msgs))
-      setMessage(data||[])
-    }
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange()
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+
+  },[])
+
+  const handleHashChange = () => {
+    const currentHash = window.location.hash.replace(/^#/, '').toLowerCase();
     
-  }, []);
-
-  const loadData = async ()=>{
-    setThinking(true);
-    setPrompt('')
-    const trimmed = prompt.trim();
-    setMsg([{content:trimmed,type:'human'}])
-    api.post('/ask',{prompt:trimmed,session_id:uid})
-    .then(res =>{
-      // console.log(res?.data?.response)
-      // setMessage(res?.data?.response?.chat_history || [])
-      setMsg([{
-        content:res?.data?.response?.input || '',
-        type:'human'
-      },{
-        content:res?.data?.response?.output || '',
-        type:'ai'
-      }])
-      setThinking(false);
-    }).catch((err) => {
-      console.log(err)
-      setThinking(false);
-    })
-  }
-
-  const setMsg = (data:Message[])=>{
-    // const new_msg:any = {
-    //   content:data?.content,
-    //   type:data?.type
-    // }
-    // console.log(message,'message')
-    const new_msg:Message[] = [...message,...data];
-    // new_msg.push(data);
-    // console.log(new_msg,data,'new_msg')
-    setMessage(new_msg)
-    localStorage.setItem("messages", JSON.stringify(new_msg));
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    loadData();
-    console.log("Submitted name:", prompt);
-    // setSubmitted(true);
+    if(!currentHash || currentHash==''){
+      setIsLanding(true)
+      
+    }
+      setHash(currentHash)  
   };
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [message]); 
+
+  const clickExplore=()=>{
+    // const event = createCustomEvent('exploreClicked', {});
+    // window.dispatchEvent(event);
+    setIsLanding(false);
+    window.location.hash = 'about';
+  }
+
 
   return (
-    <div className="container mx-auto h-full overflow-hidden px-4">
-      <div className="overflow-y-auto h-[calc(100%-140px)] my-6 p-6 bg-gray-200 rounded-2xl text-gray-500">
-      {/* <p>{uid}</p> */}
-        {!thinking && message.length==0 && (
-          <>
-            <p className="text-lg text-black">Hello,{uid}</p>
-            <p>How can I help you today?</p>
-          </>
-        )}
-
-        <div className="relative flex flex-col h-auto mb-8 gap-8">
-          {message && (message||[]).map((item,key)=>(
-            <div key={key} className={`flex ${item?.type=='human'?'justify-end':''}`}>
-              <div className={`${item?.type=='human'?'bg-black text-white px-4 py-1 flex rounded-full':''}`}>
-                <p dangerouslySetInnerHTML={{ __html: item?.content }}></p>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        {thinking && (
-          <p className="text-3xl inline-flex items-center animate-pulse gap-2 relative">🤔 <span className="text-xs absolute left-[100%] -top-3 bg-black text-white px-2 py-1 rounded-full text-nowrap">. . .</span></p>
-        )} 
-        <div ref={bottomRef} />
+    <div className="flex justify-center">
+      <p className="fixed">page : {hash}</p>
+      <div className="fixed w-[100vw] h-[100vh] top-0 left-0">
+        <Scene/>
       </div>
-      <div className="flex pb-4">
-        <div className="w-full">
-          <form onSubmit={handleSubmit} className="flex gap-0 w-full bg-gray-200 px-4 py-4">
-            <input type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Ask Anything..." className="grow px-4 text-black"/>
-            <button type="submit" className="bg-black text-white rounded-full h-8 w-8 items-center justify-center flex cursor-pointer hover:bg-gray-600">&#8627;</button>
-            </form>
+      {hash=='' ? (
+        <div className="w-[100vw] h-[100vh] absolute z-[10] top-0 left-0">
+          <div className="absolute top-[50%] w-full justify-center flex flex-col text-center p-6 fadein delay opacity-0">
+            <h2 className="text-sm md:text-3xl font-bold mt-24">Your North Star in Digital Transformation</h2>
+            <a onClick={clickExplore} className={`text-sm md:text-lg cursor-pointer hover:opacity-50 mt-6`}>EXPLORE</a>
+          </div>
         </div>
-      </div>
+      ):(
+        <div className="flex justify-center">
+          
+          {hash=='about' &&(
+            <About/>
+          )}
+          <div className="text-xs bottom-12 opacity-60 absolute uppercase">Scroll to explore</div>
+        </div>
+      )}
     </div>
   );
 }
