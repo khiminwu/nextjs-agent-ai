@@ -16,7 +16,7 @@ export default function About(scene,mount,mouse,camera,renderer) {
     let startPositions=[];
     let geometry = null
     let points=null
-    loadTextData('Who we are?', {size:10,button:false},(positions,explodePosition,geo,material)=>{
+    loadTextData('Who we are?', {size:120,button:false},(positions,explodePosition,geo,material)=>{
                 startPositions=positions;
                 velocities=explodePosition;
 

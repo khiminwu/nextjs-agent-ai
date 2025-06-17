@@ -4,7 +4,7 @@ import {fontLoader} from './Utils/fontLoader';
 import {loadTextData} from './Utils/particleTextLoader'
 import { easeOutExpo } from './Utils/easing';
 import { createCustomEvent } from '@/app/utils/createCustomEvent';
-
+import {loadPhoto} from './Utils/loadPhoto';
 export default function Service(scene,mount,mouse,camera,renderer) {
     const colors = [];
     let isMounted=false;
@@ -16,7 +16,10 @@ export default function Service(scene,mount,mouse,camera,renderer) {
     let startPositions=[];
     let geometry = null
     let points=null
-    loadTextData('Our Team', {size:10,button:false},(positions,explodePosition,geo,material)=>{
+
+    
+
+    loadTextData('Our Team', {size:120,button:false},(positions,explodePosition,geo,material)=>{
                 startPositions=positions;
                 velocities=explodePosition;
 
@@ -24,6 +27,7 @@ export default function Service(scene,mount,mouse,camera,renderer) {
          
 
             points = new THREE.Points(geometry, material);
+            points.position.y=450
             points.visible=false;
             scene.add(points);
         
@@ -104,12 +108,45 @@ export default function Service(scene,mount,mouse,camera,renderer) {
 
         startTime = performance.now();
 
-        // window.addEventListener('exploreClicked', (e) => {
-            
-            
-        // });
+       
 
     })
+
+//     loadPhoto('/bear.png', (positions, colors) => {
+//         const bearGeo = new THREE.BufferGeometry();
+//         bearGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+//         bearGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+//         const bearMaterial = new THREE.PointsMaterial({
+//   size: 2.5,
+//   vertexColors: true,
+//   transparent: true,
+//   depthWrite: false,
+//   blending: THREE.AdditiveBlending,
+// });
+
+//         const bears = new THREE.Points(bearGeo, bearMaterial);
+//         scene.add(bears);
+//         });
+
+    // loadImageData('/bear.png', (posA, colA) => {
+    //  const bearGeo =  new THREE.BufferGeometry()
+    //     bearGeo.setAttribute('position', new THREE.Float32BufferAttribute(posA, 3));
+    //     bearGeo.setAttribute('color', new THREE.Float32BufferAttribute(colA, 3));
+    //     const bearMaterial = new THREE.PointsMaterial({
+    //         size: 2,
+    //         vertexColors: true,
+    //         transparent: true,
+    //         opacity: 0.8,
+    //         depthWrite: false
+    //     });
+
+    //     const bears = new THREE.Points(bearGeo, bearMaterial);
+    //     bears.position.y=100
+    //     scene.add(bears);
+    // });
+
+
 
     const show=()=>{
         // console.log('init')

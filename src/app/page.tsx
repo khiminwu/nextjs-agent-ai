@@ -6,6 +6,10 @@ import { useEffect, useState } from 'react'
 
 import Scene from '@/app/components/Ursa/Scene';
 import About from "@/app/components/About";
+import Team from "@/app/components/Team";
+import Service from "@/app/components/Service";
+import Works from "@/app/components/Works";
+import Contact from "@/app/components/Contact";
 
 
 export default function Home() {
@@ -66,6 +70,19 @@ export default function Home() {
           {hash=='about' &&(
             <About/>
           )}
+          {hash=='team' &&(
+            <Team/>
+          )}
+          {hash=='service' &&(
+            <Service/>
+          )}
+          {hash=='works' &&(
+            <Works/>
+          )}
+          {hash=='contact' &&(
+            <Contact/>
+          )}
+          
           <div className="text-xs bottom-12 opacity-60 fixed uppercase">Scroll to explore</div>
         </div>
       )}

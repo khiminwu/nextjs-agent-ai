@@ -12,7 +12,7 @@ export const loadTextData=(text,opt, callback)=>{
     // Clear and render text
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = 'white';
-    ctx.font = 'bold 54px krul';
+    ctx.font = 'bold '+(opt?.size+'px' || '54px')+' krul';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, width / 2, height / 2);
@@ -25,8 +25,8 @@ export const loadTextData=(text,opt, callback)=>{
     const velocities =[];
     const colors = [];
 
-    for (let y = 0; y < height; y += 2) {
-      for (let x = 0; x < width; x += 2) {
+    for (let y = 0; y < height; y += 5) {
+      for (let x = 0; x < width; x += 5) {
         const i = (y * width + x) * 4;
         const alpha = imageData[i + 3];
         if (alpha > 50) {

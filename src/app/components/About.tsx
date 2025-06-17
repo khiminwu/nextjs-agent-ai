@@ -27,6 +27,7 @@ export default function Home() {
         if(onChangePage.current) return false;
         window.location.hash = '#team';
         onChangePage.current = true;
+        window.removeEventListener('scroll', handleScroll);
       }
 
         setVisibleChars(Math.floor(currentY/scrollThreshold)-1)
