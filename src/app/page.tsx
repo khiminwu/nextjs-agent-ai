@@ -54,8 +54,8 @@ export default function Home() {
         <Scene/>
       </div>
       {hash=='' ? (
-        <div className="w-[100vw] h-[100%] absolute z-[10] top-0 left-0 overflow-hidden">
-          <div className="absolute top-[45%] md:top-[40%] h-[50%] mt-2 w-full justify-between flex flex-col text-center p-6 fadein delay opacity-0">
+        <div className="w-[100vw] h-[100%] absolute z-[10] top-0 left-0 overflow-hidden no-bounce">
+          <div className="absolute top-[50%] md:top-[40%] h-[45%] mt-2 w-full justify-between flex flex-col text-center p-6 fadein delay opacity-0">
             <h2 className="text-xl md:text-3xl font-bold">Your North Star in Digital Transformation</h2>
             <a onClick={clickExplore} className={`text-sm md:text-lg cursor-pointer hover:opacity-50 mb-12 md:mb-4`}>EXPLORE</a>
           </div>
@@ -66,7 +66,7 @@ export default function Home() {
           {hash=='about' &&(
             <About/>
           )}
-          <div className="text-xs bottom-12 opacity-60 absolute uppercase">Scroll to explore</div>
+          <div className="text-xs bottom-12 opacity-60 fixed uppercase">Scroll to explore</div>
         </div>
       )}
     </div>

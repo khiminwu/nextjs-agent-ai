@@ -8,55 +8,37 @@ const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   const [visibleChars, setVisibleChars] = useState(-1);
     const chars = text.split('');
     const threshold = 50;
-    
-    
+    const lastScrollY = useRef(0);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [deltaScroll,setDeltaScroll] = useState(0);
 
   useEffect(() => {
-    const handleScroll = (e: WheelEvent) => {
-      const delta = e.deltaY;
-      
-      if (delta > 0) {
-        // let prev = visibleChars;
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const diff = currentY - lastScrollY.current;
+
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+      timeoutRef.current = setTimeout(() => {
+        setDeltaScroll(0);
+      }, 2000);
+
+      if (diff > 5) {
+        // scroll down
         setVisibleChars((prev) => Math.min(prev + 1, text.length));
-        setDeltaScroll((prev) => prev+1);
-        
-      } else {
-        
-        setDeltaScroll((prev) => Math.max(prev - 1, 0));
+        setDeltaScroll((prev) => prev + 1);
+      } else if (diff < -5) {
+        // scroll up
         setVisibleChars((prev) => Math.max(prev - 1, -1));
-      } 
+        setDeltaScroll((prev) => Math.max(prev - 1, 0));
+      }
+
+      lastScrollY.current = currentY;
     };
 
-    let touchStartY = 0;
-  let touchEndY = 0;
-
-  const handleTouchStart = (e: TouchEvent) => {
-    touchStartY = e.changedTouches[0].screenY;
-  };
-
-  const handleTouchEnd = (e: TouchEvent) => {
-    touchEndY = e.changedTouches[0].screenY;
-    const deltaY = touchStartY - touchEndY;
-
-    if (deltaY > 50) {
-      setVisibleChars((prev) => Math.min(prev + 1, text.length));
-      setDeltaScroll((prev) => prev+1);
-    } else if (deltaY < -50) {
-       setDeltaScroll((prev) => Math.max(prev - 1, 0));
-    setVisibleChars((prev) => Math.max(prev - 1, -1));
-    }
-  };
-
-    window.addEventListener('wheel', handleScroll);
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchend', handleTouchEnd);
-
-    return () => {
-        window.removeEventListener('wheel', handleScroll);
-        window.removeEventListener('touchstart', handleTouchStart);
-        window.removeEventListener('touchend', handleTouchEnd);
-    }
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
 
@@ -85,9 +67,12 @@ const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   return (
     <div className="w-full h-full absolute z-[10] top-0 left-0">
       <div className="container mx-auto px-6">
-        <div className="absolute bottom-16 py-12 text-lg md:text-2xl lg:text-4xl fadein delay opacity-0">
+        <div className='h-[1000vh]'>
+
+        </div>
+        <div className="fixed bottom-16 py-12 fadein delay opacity-0">
             {/* <p>{visibleChars}</p> */}
-            <div className="text-lg md:text-2xl lg:text-4xl whitespace-pre-wrap">
+            <div className="text-md md:text-xl lg:text-4xl whitespace-pre-wrap">
                 {chars.map((char, i) => (
                     char === '\n' ? (
                     <br key={i} />

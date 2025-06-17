@@ -60,6 +60,10 @@ a:hover {
   animation-delay: 2s;
 }
 
+.no-bounce{
+  overscroll-behavior: none;
+}
+
 @keyframes fadeout {
   from {
     opacity: 1;
