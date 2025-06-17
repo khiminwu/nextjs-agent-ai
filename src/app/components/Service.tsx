@@ -3,55 +3,55 @@ import { useEffect, useRef } from 'react';
 
 export default function Service() {
     
-    
+     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const onChangePage = useRef(false);
     const totalHeight =1000;
     const lastHash = useRef<string | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    // const [deltaScroll,setDeltaScroll] = useState(0);
-    // console.log(totalHeight,chars.length*5,'totalHeight')
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      
-      const windowHeight = window.innerHeight;
-      const bottomReached = currentY >= totalHeight - windowHeight - 10;
-      const topReached = currentY <= 5;
-      
-      
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-      console.log(currentY,'diff')
-      timeoutRef.current = setTimeout(() => {
-        if (bottomReached && lastHash.current !== '#works') {
-          window.location.hash = '#works';
-          lastHash.current = '#works';
-          window.removeEventListener('scroll', handleScroll);
-        } else if (topReached && lastHash.current !== '#team') {
-          window.location.hash = '#team';
-          lastHash.current = '#team';
-          window.removeEventListener('scroll', handleScroll);
-        }
-      }, 100); // short delay to ensure stability
-
-        // setVisibleChars(Math.floor(currentY/scrollThreshold)-1)
-      // lastScrollY.current = currentY;
-    };
-
     
   useEffect(() => {
-    window.scrollTo(0, 20);
+    
     
 
-    const delayId = setTimeout(() => {
-      window.addEventListener('scroll', handleScroll);
-      handleScroll(); // panggil langsung untuk inisialisasi jika perlu
-    }, 2000); // <-- ubah delay di sini (dalam ms)
+    const scrollEl = scrollContainerRef.current;
+    if (!scrollEl) return;
+    scrollEl.scrollTo(0, 20);
 
-    return () => {
-      clearTimeout(delayId);
-      window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      if(onChangePage.current) return false;
+      const scrollTop = scrollEl.scrollTop;
+      const clientHeight = scrollEl.clientHeight;
+      const scrollHeight = scrollEl.scrollHeight;
+
+      const bottomReached = scrollTop >= scrollHeight - clientHeight - 10;
+      const topReached = scrollTop <= 10;
+      
+        
+    //   console.log(onChangePage.current,'diff')
+      
+
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+        timeoutRef.current = setTimeout(() => {
+
+          if (bottomReached && lastHash.current !== '#works') {
+            window.location.hash = '#works';
+            lastHash.current = '#works';
+            onChangePage.current = true
+            scrollEl.removeEventListener('scroll', handleScroll);
+          } else if (topReached && lastHash.current !== '#team') {
+            window.location.hash = '#team';
+            lastHash.current = '#team';
+            onChangePage.current = true
+            scrollEl.removeEventListener('scroll', handleScroll);
+          }
+        }, 100);
     };
-  }, []);
 
+    scrollEl.addEventListener('scroll', handleScroll);
+    
+    return () => scrollEl.removeEventListener('scroll', handleScroll);
+  }, []);
 
 
 
@@ -60,7 +60,7 @@ export default function Service() {
 
   return (
     <div className="w-full h-full absolute z-[10] top-0 left-0">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 w-full h-full overflow-y-auto" ref={scrollContainerRef}>
         <div style={{height:`${totalHeight}px`}}>
 
         </div>

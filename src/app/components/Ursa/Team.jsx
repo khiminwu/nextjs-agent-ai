@@ -67,7 +67,7 @@ export default function Service(scene,mount,mouse,camera,renderer) {
                 geometry.attributes.alpha.needsUpdate = true;
                 if(elapsed>= duration + delay){
                     
-                    isMounted=false;
+                    
                     startTime = null;
                     const event = createCustomEvent('onPageChangeFinished', {});
                     window.dispatchEvent(event);
@@ -157,9 +157,11 @@ export default function Service(scene,mount,mouse,camera,renderer) {
     }
 
     const destroy=()=>{
-        startTime = performance.now();
-        isMounted=false;
-        isDestroy=true;
+        if(isMounted){
+            startTime = performance.now();
+            isMounted=false;
+            isDestroy=true;
+        }
     }
 
     return {

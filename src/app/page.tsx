@@ -54,19 +54,17 @@ export default function Home() {
   return (
     <div className="flex justify-center">
       {/* <p className="fixed">page : {hash}</p> */}
-      <div className="fixed w-[100vw] h-[100vh] top-0 left-0">
+      <div className="fixed w-[100vw] h-[100%] top-0 left-0">
         <Scene/>
       </div>
-      {hash=='' ? (
-        <div className="w-[100vw] h-[100%] absolute z-[10] top-0 left-0 overflow-hidden no-bounce">
-          <div className="absolute top-[50%] md:top-[40%] h-[45%] mt-2 w-full justify-between flex flex-col text-center p-6 fadein delay opacity-0">
-            <h2 className="text-xl md:text-3xl font-bold">Your North Star in Digital Transformation</h2>
-            <a onClick={clickExplore} className={`text-sm md:text-lg cursor-pointer hover:opacity-50 mb-12 md:mb-4`}>EXPLORE</a>
-          </div>
-        </div>
-      ):(
-        <div className="flex justify-center">
-          
+    
+        <div className="flex justify-center overflow-hidden">
+          {hash=='' &&(
+            <div className="fixed top-[50%] md:top-[40%] h-[45%] mt-2 w-full justify-between flex flex-col text-center p-6 fadein delay opacity-0">
+              <h2 className="text-xl md:text-3xl font-bold">Your North Star in Digital Transformation</h2>
+              <a onClick={clickExplore} className={`text-sm md:text-lg cursor-pointer hover:opacity-50 mb-12 md:mb-4`}>EXPLORE</a>
+            </div>
+          )}
           {hash=='about' &&(
             <About/>
           )}
@@ -82,10 +80,12 @@ export default function Home() {
           {hash=='contact' &&(
             <Contact/>
           )}
+          {hash!='' &&(
+            <div className="text-xs bottom-12 opacity-60 fixed uppercase">Scroll to explore</div>
+          )}
           
-          <div className="text-xs bottom-12 opacity-60 fixed uppercase">Scroll to explore</div>
         </div>
-      )}
+      
     </div>
   );
 }

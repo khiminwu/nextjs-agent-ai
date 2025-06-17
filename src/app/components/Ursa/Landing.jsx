@@ -145,7 +145,7 @@ export default function Landing(scene,mount,mouse,camera,renderer,onClickExplore
                 geometry.attributes.alpha.needsUpdate = true;
                 if(elapsed>= duration + delay){
                     // console.log(elapsed,'elapsed')
-                    isMounted=false;
+                    // isMounted=false;
                     startTime = null;
                     const event = createCustomEvent('onPageChangeFinished', {});
                     window.dispatchEvent(event);
@@ -187,8 +187,11 @@ export default function Landing(scene,mount,mouse,camera,renderer,onClickExplore
     }
 
     const destroy=()=>{
-        startTime = performance.now();
-        isMounted=false;
+        if(isMounted){
+            startTime = performance.now();
+            isMounted=false;
+        }
+        
     }
     
     const show=()=>{

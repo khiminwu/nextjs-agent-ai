@@ -7,7 +7,7 @@ export const fontLoader=(text, opt,callback)=>{
     let textMesh=null
     let hoverBox = null;
     const loader = new FontLoader();
-    loader.load('/fonts/krub.json', (font) => {
+    loader.load('/fonts/krub.typeface.json', (font) => {
         const textGeometry = new TextGeometry(text, {
             font: font,
             size: opt.size || 10,
@@ -55,7 +55,10 @@ export const fontLoader=(text, opt,callback)=>{
         callback(textGroup,textMesh,hoverBox);
         // Optional: move entire group down instead of individual mesh
         // textGroup.position.set(0, -1500, 0);
-    });
+    },undefined,
+  (err) => {
+    alert('Font load error:', err);
+  });
 
     
 }

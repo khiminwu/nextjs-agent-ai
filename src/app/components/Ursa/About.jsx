@@ -4,6 +4,7 @@ import {fontLoader} from './Utils/fontLoader';
 import {loadTextData} from './Utils/particleTextLoader'
 import { easeOutExpo } from './Utils/easing';
 import { createCustomEvent } from '@/app/utils/createCustomEvent';
+import {getTopY} from './Utils/'
 
 export default function About(scene,mount,mouse,camera,renderer) {
     const colors = [];
@@ -16,7 +17,7 @@ export default function About(scene,mount,mouse,camera,renderer) {
     let startPositions=[];
     let geometry = null
     let points=null
-    loadTextData('Who we are?', {size:120,button:false},(positions,explodePosition,geo,material)=>{
+    loadTextData('Who we are?', {size:140,button:false},(positions,explodePosition,geo,material)=>{
                 startPositions=positions;
                 velocities=explodePosition;
 
@@ -24,7 +25,8 @@ export default function About(scene,mount,mouse,camera,renderer) {
          
 
             points = new THREE.Points(geometry, material);
-            points.position.y=150
+            console.log(getTopY(camera),'getTopY')
+            points.position.y=window.innerHeight/2
             points.visible=false;
             scene.add(points);
         
@@ -64,7 +66,7 @@ export default function About(scene,mount,mouse,camera,renderer) {
                 geometry.attributes.alpha.needsUpdate = true;
                 if(elapsed>= duration + delay){
                     
-                    isMounted=false;
+                    // isMounted=false;
                     startTime = null;
                     const event = createCustomEvent('onPageChangeFinished', {});
                     window.dispatchEvent(event);
@@ -105,10 +107,10 @@ export default function About(scene,mount,mouse,camera,renderer) {
 
         startTime = performance.now();
 
-        // window.addEventListener('exploreClicked', (e) => {
-            
-            
-        // });
+        window.addEventListener('resize', () => {
+            console.log(window.innerHeight/2,'getTopY')
+            points.position.y = window.innerHeight/2
+        });
 
     })
 
@@ -121,9 +123,11 @@ export default function About(scene,mount,mouse,camera,renderer) {
     }
 
     const destroy=()=>{
-        startTime = performance.now();
-        isMounted=false;
-        isDestroy=true;
+        if(isMounted){
+            startTime = performance.now();
+            isMounted=false;
+            isDestroy=true;
+        }
     }
 
     return {

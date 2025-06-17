@@ -5,3 +5,12 @@ export const spaceColors = [
     new THREE.Color(0xcc99ff), // purple
     new THREE.Color(0xffffcc), // soft yellow
   ];
+
+  import * as THREE from 'three';
+
+// Fungsi untuk mendapatkan posisi Y paling atas dalam world space
+export function getTopY(camera) {
+  const topScreen = new THREE.Vector3(0, 1, -1); // (x, y, z) normalized device coords
+  topScreen.unproject(camera); // ubah ke world space
+  return topScreen.y;
+}

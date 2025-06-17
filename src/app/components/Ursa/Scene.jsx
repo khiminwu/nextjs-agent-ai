@@ -94,7 +94,7 @@ export default function Scene() {
       0.1,
       50000
     );
-    
+    camera.position.z = 5;
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(mount.clientWidth, mount.clientHeight);

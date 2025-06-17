@@ -3,7 +3,7 @@ import * as THREE from 'three';
 export const loadTextData=(text,opt, callback)=>{
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const width = 800;
+    const width = 1000;
     const height = 400;
 
     canvas.width = width;
