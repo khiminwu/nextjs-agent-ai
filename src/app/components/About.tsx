@@ -2,37 +2,34 @@
 import { useEffect, useState,useRef } from 'react';
 
 export default function Home() {
-  const text = `We are more than just an agency.\nwe are your guiding star in the complex and\never-evolving digital landscape.\n\nwe believe in the power of innovation, creativity, \nand strategic thinking to drive meaningful results \nfor our clients.`;
-const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+    const text = `We are more than just an agency.\nwe are your guiding star in the complex and\never-evolving digital landscape.\n\nwe believe in the power of innovation, creativity, \nand strategic thinking to drive meaningful results \nfor our clients.`;
 
-  const [visibleChars, setVisibleChars] = useState(-1);
+
+    const [visibleChars, setVisibleChars] = useState(-1);
     const chars = text.split('');
-    const threshold = 50;
-    const lastScrollY = useRef(0);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const [deltaScroll,setDeltaScroll] = useState(0);
+    const scrollThreshold = 5;
 
+    const lastScrollY = useRef(0);
+    const onChangePage = useRef(false);
+    const totalHeight =text.length *  scrollThreshold *2;
+
+    // const [deltaScroll,setDeltaScroll] = useState(0);
+    // console.log(totalHeight,chars.length*5,'totalHeight')
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
-      const diff = currentY - lastScrollY.current;
-
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-      timeoutRef.current = setTimeout(() => {
-        setDeltaScroll(0);
-      }, 2000);
-
-      if (diff > 5) {
-        // scroll down
-        setVisibleChars((prev) => Math.min(prev + 1, text.length));
-        setDeltaScroll((prev) => prev + 1);
-      } else if (diff < -5) {
-        // scroll up
-        setVisibleChars((prev) => Math.max(prev - 1, -1));
-        setDeltaScroll((prev) => Math.max(prev - 1, 0));
+      
+      const windowHeight = window.innerHeight;
+      
+        
+    //   console.log(onChangePage.current,'diff')
+      if(currentY>(totalHeight-windowHeight)-10){
+        if(onChangePage.current) return false;
+        window.location.hash = '#team';
+        onChangePage.current = true;
       }
 
+        setVisibleChars(Math.floor(currentY/scrollThreshold)-1)
       lastScrollY.current = currentY;
     };
 
@@ -42,23 +39,6 @@ const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   }, []);
 
 
-  useEffect(() => {
-    const maxScrollBeforeNext = text.length + threshold;
-    console.log(visibleChars,deltaScroll,maxScrollBeforeNext)
-    if (
-      visibleChars >= text.length &&
-      deltaScroll > maxScrollBeforeNext
-    ) {
-      
-      window.location.hash = '#team'; // change hash
-    }
-    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-    scrollTimeout.current = setTimeout(() => {
-        console.log(deltaScroll)
-        setDeltaScroll(visibleChars);
-      }, 2000); // 2 seconds
-
-  }, [deltaScroll, visibleChars, text.length]);
 
 
 
@@ -67,7 +47,7 @@ const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   return (
     <div className="w-full h-full absolute z-[10] top-0 left-0">
       <div className="container mx-auto px-6">
-        <div className='h-[1000vh]'>
+        <div style={{height:`${totalHeight}px`}}>
 
         </div>
         <div className="fixed bottom-16 py-12 fadein delay opacity-0">
