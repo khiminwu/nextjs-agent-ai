@@ -24,7 +24,7 @@ export default function Contact() {
       const clientHeight = scrollEl.clientHeight;
       const scrollHeight = scrollEl.scrollHeight;
 
-      const bottomReached = scrollTop >= scrollHeight - clientHeight - 10;
+      
       const topReached = scrollTop <= 10;
       
         

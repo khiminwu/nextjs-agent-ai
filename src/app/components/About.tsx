@@ -28,7 +28,7 @@ export default function Home() {
       const scrollHeight = scrollEl.scrollHeight;
 
       const bottomReached = scrollTop >= scrollHeight - clientHeight - 10;
-      const topReached = scrollTop <= 10;
+      
       
         
     //   console.log(onChangePage.current,'diff')
