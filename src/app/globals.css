@@ -60,9 +60,9 @@ a:hover {
   animation-delay: 2s;
 }
 
-.no-bounce{
+/* .no-bounce{
   overscroll-behavior: none;
-}
+} */
 
 @keyframes fadeout {
   from {
@@ -76,3 +76,17 @@ a:hover {
 .fadeout {
   animation: fadein 0.5s ease-out forwards;
 }
+
+@keyframes twinkle {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0px white;
+    }
+    50% {
+      opacity: 0.4;
+      box-shadow: 0 0 8px white;
+    }
+  }
+  .twinkle {
+    animation: twinkle 6s ease-in-out infinite;
+  }

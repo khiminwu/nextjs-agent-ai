@@ -10,7 +10,7 @@ import Service from './Service';
 import Works from './Works';
 import Contact from './Contact';
 
-export default function Scene() {
+export default function Scene({hash}) {
   const mountRef = useRef();
   const textureLoader = new THREE.TextureLoader();
   
@@ -39,32 +39,39 @@ export default function Scene() {
   starMaterial,
   stars
   = null;
-  let hash = '';
+  // hash = '';
   let onChangePage = true;
   const starCount = 1500;
   const starOpacities = new Float32Array(starCount);
   const flickerOffsets = new Float32Array(starCount);
   const flickerSpeeds = new Float32Array(starCount);
-  let aboutPage,servicePage,workPage,contactPage,landingPage,teamPage = false;
+  
+
+  const aboutPage = useRef(null);
+  const teamPage = useRef(null);
+  const servicePage = useRef(null);
+  const workPage = useRef(null);
+  const contactPage = useRef(null);
+  const landingPage = useRef(null);
 
   useEffect(() => {
     particleTexture = textureLoader.load('/particle-soft.png');
-    isMobile = window.innerWidth <= 640; // customize as needed
+    isMobile = window.innerWidth <= 1080; // customize as needed
     
     init();
     setupScene();
     
-    landingPage = Landing(scene,mount,mouse,camera,renderer,onClickExplore);
-    aboutPage = About(scene,mount,mouse,camera,renderer);
-    teamPage = Team(scene,mount,mouse,camera,renderer);
-    servicePage = Service(scene,mount,mouse,camera,renderer);
-    workPage = Works(scene,mount,mouse,camera,renderer);
-    contactPage = Contact(scene,mount,mouse,camera,renderer);
+    landingPage.current = Landing(scene,mount,mouse,camera,renderer,onClickExplore);
+    aboutPage.current = About(scene,mount,mouse,camera,renderer);
+    teamPage.current = Team(scene,mount,mouse,camera,renderer);
+    servicePage.current = Service(scene,mount,mouse,camera,renderer);
+    workPage.current = Works(scene,mount,mouse,camera,renderer);
+    contactPage.current = Contact(scene,mount,mouse,camera,renderer);
 
     // Service(scene,mount,mouse,camera,renderer);
     window.addEventListener('resize', handleResize);
     window.addEventListener('wheel', handleScroll,{ passive: true });
-    window.addEventListener('hashchange', handleHashChange);
+    // window.addEventListener('hashchange', handleHashChange);
     window.addEventListener('onPageChangeFinished', pageChangeFinished);
     
 
@@ -73,10 +80,10 @@ export default function Scene() {
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('wheel', handleScroll);
-      window.removeEventListener('hashchange', handleHashChange);
+      // window.removeEventListener('hashchange', handleHashChange);
       window.removeEventListener('onPageChangeFinished', pageChangeFinished);
       mount.innerHTML = '';
-      renderer.dispose();
+      // renderer.dispose();
     };
   }, []);
 
@@ -118,6 +125,11 @@ export default function Scene() {
     
   }
 
+  useEffect(()=>{
+    console.log('hash =-=',hash,aboutPage)
+    handleHashChange();
+  },[hash])
+
   const setupScene = () => {
     
 
@@ -138,7 +150,7 @@ export default function Scene() {
     // Light
     const light = new THREE.PointLight(0xffffff, 1);
     light.position.set(50, 50, 50);
-    scene.add(light);
+    // scene.add(light);
     
     const starPositions = [];
     
@@ -214,8 +226,8 @@ export default function Scene() {
 
 
 
-      controls.update();
-      renderer.render(scene, camera);
+      controls?.update();
+      renderer?.render(scene, camera);
     };
     scene.add(stars);
     animate();
@@ -248,7 +260,25 @@ export default function Scene() {
       // if(camera.aspect>1 & isMobile) zPos = 100;
 
       //  console.log(isPortrait,isMobile,aspect,zPos,'fitWidthDistance')
+
+      // if(landingPage.current) landingPage.current.resize();
+      // if(aboutPage.current) aboutPage.current.resize();
+      // if(servicePage.current) servicePage.current.resize();
+      // if(workPage.current) workPage.current.resize();
+      // if(contactPage.current) contactPage.current.resize();
+      if(teamPage.current) teamPage.current.resize({isPortrait,isMobile});
+
       camera.position.z = zPos;
+
+      // console.log('resize',isMobile,isPortrait,points)
+        if (isMobile && isPortrait) {
+            scene.position.y=400 // Shift down for small portrait screens
+        }  else {
+            scene.position.y = 0; // default for desktop
+        }
+        
+
+        
       renderer.render(scene, camera);
   };
 
@@ -272,35 +302,35 @@ export default function Scene() {
 
   const handleHashChange = () => {
     
-      hash = window.location.hash.replace(/^#/, '').toLowerCase();
+      // hash = window.location.hash.replace(/^#/, '').toLowerCase();
       currentPage = hash;
       // setHash(window.location.hash);
-      console.log('Hash changed to:', hash);
-      if(landingPage) landingPage.destroy();
-      if(aboutPage) aboutPage.destroy();
-      if(servicePage) servicePage.destroy();
-      if(workPage) workPage.destroy();
-      if(contactPage) contactPage.destroy();
-      if(teamPage) teamPage.destroy();
+      console.log('Hash changed to:',landingPage.current, hash);
+      if(landingPage.current) landingPage.current.destroy();
+      if(aboutPage.current) aboutPage.current.destroy();
+      if(servicePage.current) servicePage.current.destroy();
+      if(workPage.current) workPage.current.destroy();
+      if(contactPage.current) contactPage.current.destroy();
+      if(teamPage.current) teamPage.current.destroy();
       
       switch(hash){
         case 'about':
-          if(aboutPage) aboutPage.show();
+          if(aboutPage.current) aboutPage.current.show();
           break;
         case 'team':
-          if(teamPage) teamPage.show();
+          if(teamPage.current) teamPage.current.show();
           break;
         case 'service':
-          if(servicePage) servicePage.show();
+          if(servicePage.current) servicePage.current.show();
           break;
         case 'works':
-          if(workPage) workPage.show();
+          if(workPage.current) workPage.current.show();
           break;
         case 'contact':
-          if(contactPage) contactPage.show();
+          if(contactPage.current) contactPage.current.show();
           break;
         default:
-          if(landingPage) landingPage.show();
+          if(landingPage.current) landingPage.current.show();
           break;
       }
       onChangePage=true;

@@ -146,6 +146,9 @@ export default function Service(scene,mount,mouse,camera,renderer) {
     //     scene.add(bears);
     // });
 
+    const resize=({isMobile,isPortrait})=>{
+        
+    }
 
 
     const show=()=>{
@@ -166,6 +169,7 @@ export default function Service(scene,mount,mouse,camera,renderer) {
 
     return {
         show,
-        destroy
+        destroy,
+        resize
     };
 }

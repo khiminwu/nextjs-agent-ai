@@ -72,32 +72,36 @@ export const loadTextData=(text,opt, callback)=>{
     // });
 
     const material = new THREE.ShaderMaterial({
-                size:0.5,
+                uniforms: {
+                  size: { value: 2},
+                  pointTexture: { value: new THREE.TextureLoader().load('/particle_square.svg') }
+                },
                 vertexShader: `
-                    attribute float alpha;
-                    varying float vAlpha;
-                    varying vec3 vColor;
-                    void main() {
+                  uniform float size;
+                  attribute float alpha;
+                  varying float vAlpha;
+                  varying vec3 vColor;
+                  void main() {
                     vAlpha = alpha;
                     vColor = color;
                     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-                    gl_PointSize = 1.7 * (300.0 / -mvPosition.z);
+                    gl_PointSize = size * (300.0 / -mvPosition.z);
                     gl_Position = projectionMatrix * mvPosition;
-                    }
+                  }
                 `,
                 fragmentShader: `
-                    uniform sampler2D pointTexture;
-                    varying float vAlpha;
-                    varying vec3 vColor;
-                    void main() {
+                  uniform sampler2D pointTexture;
+                  varying float vAlpha;
+                  varying vec3 vColor;
+                  void main() {
                     gl_FragColor = vec4(vColor, vAlpha);
                     gl_FragColor = gl_FragColor * texture2D(pointTexture, gl_PointCoord);
-                    }
+                  }
                 `,
                 transparent: true,
                 depthWrite: false,
                 blending: THREE.AdditiveBlending,
-                vertexColors: true,
+                vertexColors: true
             });
     
 

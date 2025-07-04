@@ -16,7 +16,7 @@ export default function Contact(scene,mount,mouse,camera,renderer) {
     let startPositions=[];
     let geometry = null
     let points=null
-    loadTextData('Contact us?', {size:120,button:false},(positions,explodePosition,geo,material)=>{
+    loadTextData('Get in touch', {size:120,button:false},(positions,explodePosition,geo,material)=>{
                 startPositions=positions;
                 velocities=explodePosition;
 

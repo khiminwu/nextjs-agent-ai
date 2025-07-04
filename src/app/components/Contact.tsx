@@ -1,70 +1,60 @@
 'use client';
-import { useEffect,useRef } from 'react';
+import { useEffect, useState,useRef,forwardRef, useImperativeHandle } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
-export default function Contact() {
-    
-    
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
-    const onChangePage = useRef(false);
-    const totalHeight =1000;
-    const lastHash = useRef<string | null>(null);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    
-  useEffect(() => {
-    
-    
+export type ContactRef = {
+  onScroll: () => void;
+};
 
-    const scrollEl = scrollContainerRef.current;
-    if (!scrollEl) return;
-    scrollEl.scrollTo(0, 20);
 
-    const handleScroll = () => {
-      if(onChangePage.current) return false;
-      const scrollTop = scrollEl.scrollTop;
+const ContactComponent = forwardRef<ContactRef>((props, ref) => {
+  
+    const sectionRef = useRef<HTMLDivElement>(null);
+    // const lastScrollY = useRef<number>(0); // for direction tracking
+  
+
+    
+  useImperativeHandle(ref, () => ({
+    onScroll() {
+       const sectionEl = sectionRef.current;
+      if (!sectionEl) return;
       
+      const rect = sectionEl.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
 
+      // const sectionHeight = rect.height;
+      const sectionTop = rect.top+windowHeight;
       
-      const topReached = scrollTop <= 10;
-      
-        
-    //   console.log(onChangePage.current,'diff')
-      
-
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-        timeoutRef.current = setTimeout(() => {
-
-         if (topReached && lastHash.current !== '#works') {
-            window.location.hash = '#works';
-            lastHash.current = '#works';
-            onChangePage.current = true
-            scrollEl.removeEventListener('scroll', handleScroll);
-          }
-        }, 100);
-    };
-
-    scrollEl.addEventListener('scroll', handleScroll);
-    
-    return () => scrollEl.removeEventListener('scroll', handleScroll);
-  }, []);
-
-
-
-
-
+      const scrollRatio = 1 - sectionTop / windowHeight;
+      // const normalized = Math.max(0, Math.min(scrollRatio, 1)); // clamp 0–1
+      // console.log('scroll Ratio',scrollRatio)
+    }
+  }));
+  
   
 
   return (
-    <div className="w-full h-full absolute z-[10] top-0 left-0">
-      <div className="container mx-auto px-6 w-full h-full overflow-y-auto" ref={scrollContainerRef}>
-        <div style={{height:`${totalHeight}px`}}>
-
+    <div  className="w-full relative z-[10] top-0 left-0 overflow-hidden relative"  ref={sectionRef}>
+      <div className='w-full mb-[100vh]'>
+        <div id="service" className='mt-[100vh]'></div>
+        <div className='absolute bottom-24 md:bottom-12 w-full'>
+          <div className='container mx-auto px-6 py-12'>
+            <h1 className='text-2xl font-bold'>
+              <span className='text-xl font-normal'>e. </span>voyager@ursamajor.id</h1>
+            <h1 className='text-2xl font-bold'>
+              <span className='text-xl font-normal'>p. </span>
+              +62 811 933 8600</h1>
+            <h1 className='text-2xl font-bold'>
+              <span className='text-xl font-normal'>p. </span>
+              +62 811 933 8600</h1>
+          </div>
         </div>
-        <div className="fixed bottom-16 py-12 fadein delay opacity-0">
-            {/* <p>{visibleChars}</p> */}
-            <p>Contact content</p>
-        </div>
-      </div>
+     </div>
     </div>
   );
-}
+})
+
+
+
+export default ContactComponent;

@@ -15,6 +15,10 @@ module.exports = {
         text: '#f1f5f9',
       },
       keyframes: {
+        twinkle: {
+          '0%, 100%': { opacity: 1, boxShadow: '0 0 0px white' },
+          '50%': { opacity: 0.5, boxShadow: '0 0 8px white' },
+        },
         fadein: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
@@ -22,6 +26,7 @@ module.exports = {
       },
       animation: {
         fadein: 'fadein 0.5s ease-out forwards',
+        twinkle: 'twinkle 1.2s infinite ease-in-out',
       },
     },
   },

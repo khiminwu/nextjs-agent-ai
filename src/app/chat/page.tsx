@@ -87,9 +87,9 @@ export default function Chat() {
     // setSubmitted(true);
   };
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [message]); 
+  // useEffect(() => {
+  //   bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [message]); 
 
   return (
     <div className="container mx-auto h-full overflow-hidden px-4">

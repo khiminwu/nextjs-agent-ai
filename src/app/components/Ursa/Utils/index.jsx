@@ -10,6 +10,7 @@ export const spaceColors = [
 
 // Fungsi untuk mendapatkan posisi Y paling atas dalam world space
 export function getTopY(camera) {
+  if(!camera) return;
   const topScreen = new THREE.Vector3(0, 1, -1); // (x, y, z) normalized device coords
   topScreen.unproject(camera); // ubah ke world space
   return topScreen.y;

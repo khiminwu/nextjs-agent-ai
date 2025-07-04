@@ -1,75 +1,131 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState,useRef,forwardRef, useImperativeHandle } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import CurvedText from './CurveText';
+import 'swiper/css';
 
-export default function Works() {
-    
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
-    const onChangePage = useRef(false);
-    const totalHeight =1000;
-    const lastHash = useRef<string | null>(null);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-    
-  useEffect(() => {
-    
-    
+export type WorksRef = {
+  onScroll: () => void;
+};
 
-    const scrollEl = scrollContainerRef.current;
-    if (!scrollEl) return;
-    scrollEl.scrollTo(0, 20);
 
-    const handleScroll = () => {
-      if(onChangePage.current) return false;
-      const scrollTop = scrollEl.scrollTop;
-      const clientHeight = scrollEl.clientHeight;
-      const scrollHeight = scrollEl.scrollHeight;
+const WorksComponent = forwardRef<WorksRef>((props, ref) => {
+  
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const [positions, setPositions] = useState<{ top: number; left: number }[]>([]);
+    const [opacity, setOpacity] = useState(0);
+    
+    const [works,setWorks] = useState([
+      {title:'work 1',id:1},
+      {title:'Lorem Ipsum',id:2},
+      {title:'Seketiket',id:3},
+      {title:'work 2',id:4},
+      {title:'work 3',id:5}
+    ])
+     
+    useEffect(() => {
+      const padding = 20;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight/2;
 
-      const bottomReached = scrollTop >= scrollHeight - clientHeight - 10;
-      const topReached = scrollTop <= 10;
+      const rows = 2;
+      const cols = 3;
+      const cellWidth = (screenWidth - padding * 2) / cols;
+      const cellHeight = (screenHeight - 50 * 2) / rows;
+
+      const usedCells = new Set<number>();
+
+      const getRandomCell = () => {
+        let index = Math.floor(Math.random() * (rows * cols));
+        while (usedCells.has(index)) {
+          index = Math.floor(Math.random() * (rows * cols));
+        }
+        usedCells.add(index);
+        return index;
+      };
+
+      const generated = works.map(() => {
+        const cellIndex = getRandomCell();
+        const row = Math.floor(cellIndex / cols);
+        const col = cellIndex % cols;
+
+        const jitterX = Math.random() * (cellWidth - 50);
+        const jitterY = Math.random() * (cellHeight - 50);
+
+        return {
+          top: padding + row * cellHeight + jitterY,
+          left: padding + col * cellWidth + jitterX,
+        };
+      });
+
+      setPositions(generated);
+    }, []);
+
+    const delay = ()=>{
+      return `${Math.random() * 2}s`;
+    }
+    
+  useImperativeHandle(ref, () => ({
+    onScroll() {
+       const sectionEl = sectionRef.current;
+      if (!sectionEl) return;
       
-        
-    //   console.log(onChangePage.current,'diff')
+      const rect = sectionEl.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // const sectionHeight = rect.height;
+      const sectionTop = rect.top+windowHeight;
       
+      const scrollRatio = 1 - sectionTop / windowHeight;
 
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      const delay = 0;
+      let fade = 0;
 
-        timeoutRef.current = setTimeout(() => {
-
-          if (bottomReached && lastHash.current !== '#contact') {
-            window.location.hash = '#contact';
-            lastHash.current = '#contact';
-            onChangePage.current = true
-            scrollEl.removeEventListener('scroll', handleScroll);
-          } else if (topReached && lastHash.current !== '#service') {
-            window.location.hash = '#service';
-            lastHash.current = '#service';
-            onChangePage.current = true
-            scrollEl.removeEventListener('scroll', handleScroll);
-          }
-        }, 100);
-    };
-
-    scrollEl.addEventListener('scroll', handleScroll);
-    
-    return () => scrollEl.removeEventListener('scroll', handleScroll);
-  }, []);
-
-
-
-
-
+      if (scrollRatio <= 1) {
+        // Fade in phase
+        const ratio = Math.max(0, Math.min((scrollRatio - delay) / 0.5, 1));
+        fade = ratio;
+      } else {
+        // Fade out phase
+        const fadeOutRatio = 1 - Math.min((scrollRatio - 1 - delay) / 0.5, 1);
+        fade = Math.max(0, fadeOutRatio);
+      }
+      setOpacity(fade)
+      // console.log(fade,'fadefade')
+      // const normalized = Math.max(0, Math.min(scrollRatio, 1)); // clamp 0–1
+      // console.log('scroll Ratio',scrollRatio)
+    }
+  }));
+  
   
 
   return (
-    <div className="w-full h-full absolute z-[10] top-0 left-0">
-      <div className="container mx-auto px-6 w-full h-full overflow-y-auto" ref={scrollContainerRef}>
-        <div style={{height:`${totalHeight}px`}}>
-
+    <div  className="w-full relative z-[99] top-0 left-0 overflow-hidden relative"  ref={sectionRef}>
+      <div className='w-full pb-[50vh]'>
+        <div id="works" className='mt-[50vh] mb-[100vh]'></div>
+        <div className='fixed z-[99] left-0 bottom-0 md:bottom-12 w-full   inset-0 pointer-events-none' style={{opacity:opacity}}>
+        <div className='absolute w-[100vw] h-[50vh] bg-white/0 bottom-24'>
+        
+          {works.map((item,key)=>
+            <div
+              key={key}
+              className="absolute pointer-events-auto text-white cursor-pointer group hover:scale-100 scale-30 transition-all duration-300"
+              style={{
+                top: positions[key]?.top ?? 0,
+                left: positions[key]?.left ?? 0,
+              }}
+            >
+              <div className='absolute top-0  left-0 top-[20%] left-[50%] -translate-x-1/2 -translate-y-1/2 transition-all duration-300 opacity-0 group-hover:opacity-100'><CurvedText text={item.title.toUpperCase()}/></div>
+              <div className='w-[70px] h-[70px] bg-white rounded-full transition-all twinkle' style={{ animationDelay: delay() }}></div>
+            </div>
+          )}
+          </div>
         </div>
-        <div className="fixed bottom-16 py-12 fadein delay opacity-0">
-            {/* <p>{visibleChars}</p> */}
-            <p>Works content</p>
-        </div>
-      </div>
+     </div>
     </div>
   );
-}
+})
+
+
+
+export default WorksComponent;
