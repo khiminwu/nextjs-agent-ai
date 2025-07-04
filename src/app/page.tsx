@@ -140,7 +140,7 @@ export default function Home() {
 
   return (
     <div className="w-full flex justify-center">
-      <p className="fixed">page : {hash}</p>
+      {/* <p className="fixed">page : {hash}</p> */}
       <div className="fixed w-[100vw] h-[100%] top-0 left-0 overflow-hidden">
         <Scene hash={hash}/>
       </div>

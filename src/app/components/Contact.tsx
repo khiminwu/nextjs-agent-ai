@@ -30,7 +30,7 @@ const ContactComponent = forwardRef<ContactRef>((props, ref) => {
       <div className='w-full mb-[100vh]'>
         <div id="service" className='mt-[100vh]'></div>
         <div className='absolute bottom-24 md:bottom-12 w-full'>
-          <div className='container mx-auto px-6 py-12'>
+          <div className='container mx-auto px-6 py-12 flex md:flex-row flex-col md:gap-16 md:justify-center md:items-center'>
             <h1 className='text-2xl font-bold'>
               <span className='text-xl font-normal'>e. </span>voyager@ursamajor.id</h1>
             <h1 className='text-2xl font-bold'>
