@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useState,useRef,forwardRef, useImperativeHandle } from 'react';
-import { useRouter } from "next/navigation";
+import {  useState,useRef,forwardRef, useImperativeHandle } from 'react';
+// import { useRouter } from "next/navigation";
 
 
 export type AboutRef = {
@@ -8,8 +8,9 @@ export type AboutRef = {
 };
 
 
+
 const AboutComponent = forwardRef<AboutRef>((props, ref) => {
-const router = useRouter();
+// const router = useRouter();
   const text = `We are more than just an agency.\nwe are your guiding star in the complex and\never-evolving digital landscape.\n\nwe believe in the power of innovation, creativity, \nand strategic thinking to drive meaningful results \nfor our clients.`;
 
     const [opacity, setOpacity] = useState(1);
@@ -30,7 +31,7 @@ const router = useRouter();
     onScroll() {
       if (!sectionRef.current) return;
 
-      const rect = sectionRef.current.getBoundingClientRect();
+      // const rect = sectionRef.current.getBoundingClientRect();
       // const hasReachedBottom = rect.bottom <= window.innerHeight;
 
       const scrollTop = window.scrollY;
@@ -119,6 +120,7 @@ const router = useRouter();
   );
 })
 
-
+// ✅ Add this line to fix the ESLint warning
+AboutComponent.displayName = "AboutComponent";
 
 export default AboutComponent;

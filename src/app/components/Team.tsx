@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState,useRef,forwardRef, useImperativeHandle } from 'react';
+import {  useState,useRef,forwardRef, useImperativeHandle } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
@@ -14,7 +14,7 @@ const TeamComponent = forwardRef<TeamRef>((props, ref) => {
    const [opacities, setOpacities] = useState<number[]>(
     Array(names.length).fill(0)
   );
-    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    
     const sectionRef = useRef<HTMLDivElement>(null);
     // const lastScrollY = useRef<number>(0); // for direction tracking
   
@@ -114,6 +114,7 @@ const TeamComponent = forwardRef<TeamRef>((props, ref) => {
   );
 })
 
-
+// ✅ Add this line to fix the ESLint warning
+TeamComponent.displayName = "TeamComponent";
 
 export default TeamComponent;

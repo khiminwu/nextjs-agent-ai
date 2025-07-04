@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState,useRef,forwardRef, useImperativeHandle } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+
 import CurvedText from './CurveText';
 import 'swiper/css';
 
@@ -15,15 +15,17 @@ const WorksComponent = forwardRef<WorksRef>((props, ref) => {
     const [positions, setPositions] = useState<{ top: number; left: number }[]>([]);
     const [opacity, setOpacity] = useState(0);
     
-    const [works,setWorks] = useState([
+   const works = [
       {title:'work 1',id:1},
       {title:'Lorem Ipsum',id:2},
       {title:'Seketiket',id:3},
       {title:'work 2',id:4},
       {title:'work 3',id:5}
-    ])
+    ]
      
     useEffect(() => {
+
+
       const padding = 20;
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight/2;
@@ -126,6 +128,6 @@ const WorksComponent = forwardRef<WorksRef>((props, ref) => {
   );
 })
 
-
+WorksComponent.displayName = "WorksComponent";
 
 export default WorksComponent;

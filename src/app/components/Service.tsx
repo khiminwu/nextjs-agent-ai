@@ -1,8 +1,6 @@
 
 'use client';
-import { useEffect, useState,useRef,forwardRef, useImperativeHandle } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import { useRef,forwardRef, useImperativeHandle } from 'react';
 
 export type ServiceRef = {
   onScroll: () => void;
@@ -21,15 +19,9 @@ const ServiceComponent = forwardRef<ServiceRef>((props, ref) => {
        const sectionEl = sectionRef.current;
       if (!sectionEl) return;
       
-      const rect = sectionEl.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
 
-      // const sectionHeight = rect.height;
-      const sectionTop = rect.top+windowHeight;
       
-      const scrollRatio = 1 - sectionTop / windowHeight;
-      // const normalized = Math.max(0, Math.min(scrollRatio, 1)); // clamp 0–1
-      // console.log('scroll Ratio',scrollRatio)
+      
     }
   }));
   
@@ -40,7 +32,7 @@ const ServiceComponent = forwardRef<ServiceRef>((props, ref) => {
       <div>
         <div id="service" className='mt-[100vh] pt-26'>
           <div className='container mx-auto px-6'>
-            <p className='font-bold text-2xl '>We focused on web solution-whether it's brand building or work automation.</p>
+            <p className='font-bold text-2xl '>We focused on web solution-whether its brand building or work automation.</p>
             <div className='flex flex-col border-t mt-12'>
                 <div className='flex flex-col md:flex-row gap-2 py-8 border-b border-white w-full'>
                     <div className='flex gap-2 items-start md:w-[45%]'>
@@ -88,5 +80,5 @@ const ServiceComponent = forwardRef<ServiceRef>((props, ref) => {
 })
 
 
-
+ServiceComponent.displayName = "ServiceComponent";
 export default ServiceComponent;

@@ -1,7 +1,6 @@
 'use client';
-import { useEffect, useState,useRef,forwardRef, useImperativeHandle } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import { useRef,forwardRef, useImperativeHandle } from 'react';
+
 
 export type ContactRef = {
   onScroll: () => void;
@@ -19,16 +18,8 @@ const ContactComponent = forwardRef<ContactRef>((props, ref) => {
     onScroll() {
        const sectionEl = sectionRef.current;
       if (!sectionEl) return;
+    
       
-      const rect = sectionEl.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      // const sectionHeight = rect.height;
-      const sectionTop = rect.top+windowHeight;
-      
-      const scrollRatio = 1 - sectionTop / windowHeight;
-      // const normalized = Math.max(0, Math.min(scrollRatio, 1)); // clamp 0–1
-      // console.log('scroll Ratio',scrollRatio)
     }
   }));
   
@@ -55,6 +46,7 @@ const ContactComponent = forwardRef<ContactRef>((props, ref) => {
   );
 })
 
-
+// ✅ Add this line to fix the ESLint warning
+ContactComponent.displayName = "ContactComponent";
 
 export default ContactComponent;

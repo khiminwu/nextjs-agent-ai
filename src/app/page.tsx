@@ -16,7 +16,7 @@ import Contact,{ContactRef} from "@/app/components/Contact";
 export default function Home() {
   // const [isLanding,setIsLanding] = useState(false);
   const [hash,setHash] = useState('');
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
   const aboutRef = useRef<AboutRef>(null);
   const teamRef = useRef<TeamRef>(null);
   const serviceRef = useRef<ServiceRef>(null);
@@ -110,11 +110,6 @@ export default function Home() {
      
     };
 
-    window.addEventListener('onPageChangeFinished', (e) => {
-      // console.log(e)
-      // handleHashChange()
-      // Trigger your explode animation or navigation
-    });
 
     window.addEventListener('hashchange', handleHashChange);
     handleHashChange()
@@ -160,7 +155,7 @@ export default function Home() {
           {hash!='' && hash!='home' &&(
             <div id="content" className="w-full h-full">
               <div id="about" ref={aboutSection}>
-                <About ref={aboutRef}/>
+                <About ref={aboutRef} />
               </div>
               <div ref={serviceSection}>
                 <Service ref={serviceRef}/>
