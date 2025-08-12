@@ -126,12 +126,9 @@ export default function Home() {
 
   
 
-  const clickExplore=()=>{
-    // const event = createCustomEvent('exploreClicked', {});
-    // window.dispatchEvent(event);
-    // setIsLanding(false);
-    window.location.hash = 'about';
-  }
+  // const clickExplore=()=>{
+  //   window.location.hash = 'about';
+  // }
 
   
 
