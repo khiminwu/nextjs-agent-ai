@@ -8,7 +8,7 @@ export default function Landing(scene,mount,mouse,camera,renderer,onClickExplore
     const textureLoader = new THREE.TextureLoader();
     const particleTexture = textureLoader.load('/particle-soft.png');
     const raycaster = new THREE.Raycaster();
-    
+    let idleActive = false;
     let textMesh=null
     let hoverBox = null;
     let explodeStart = null;
@@ -22,6 +22,23 @@ export default function Landing(scene,mount,mouse,camera,renderer,onClickExplore
     let isMounted = false;
     let textGroup=null;
     let points = null
+    let idleOffsets = []; 
+
+    // Settings for interaction
+    const followRadius = 200; // how far effect reaches
+    const followStrength = 30;   // how strong the push is
+
+    
+    const mousePos = new THREE.Vector2();
+    
+    const mousePoint = new THREE.Vector3();
+
+    window.addEventListener('mousemove', (event) => {
+        console.log(event.clientX,event.clientY)
+        mousePos.x = (event.clientX / (window.innerWidth*2)) ;
+        mousePos.y = -(event.clientY / (window.innerHeight*2)) ;
+    });
+    
     loadImageData('/particle.png', (posA, colA) => {
         
         // startPositions = [...posA];
@@ -42,9 +59,11 @@ export default function Landing(scene,mount,mouse,camera,renderer,onClickExplore
 
             const distance = 300 + Math.random() * 300; // random explosion strength
             dir.multiplyScalar(distance); // apply strength
-
+            idleOffsets.push(dir.x, dir.y, dir.z); // one phase per particle
             velocities.push(dir.x, dir.y, dir.z);
         }
+
+        
 
         
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(posA, 3));
@@ -92,11 +111,51 @@ export default function Landing(scene,mount,mouse,camera,renderer,onClickExplore
         
        
         
-      
-        
         
         const animate = (time) => {
             requestAnimationFrame(animate);
+            const elapsed = time / 1000; // seconds
+            const idleAmplitude = 3; 
+            if (idleActive) {
+                const positions = geometry.attributes.position.array;
+
+                // Raycast from mouse into scene
+                raycaster.setFromCamera(mousePos, camera);
+                raycaster.ray.at(500, mousePoint); // adjust 500 to control depth
+
+                for (let i = 0; i < positions.length; i += 3) {
+                    const phase = idleOffsets[i / 3];
+                    const ox = startPositions[i];
+                    const oy = startPositions[i + 1];
+                    const oz = startPositions[i + 2];
+
+                    // Idle floating
+                    let px = ox + Math.sin(elapsed * 0.6 + phase) * idleAmplitude;
+                    let py = oy + Math.cos(elapsed * 0.8 + phase) * idleAmplitude;
+                    let pz = oz + Math.sin(elapsed * 0.4 + phase) * idleAmplitude;
+
+                    // Always apply mouse attraction, but with distance falloff
+                    // const particlePos = new THREE.Vector3(px, py, pz);
+                    // const dist = particlePos.distanceTo(mousePoint);
+
+                    // const falloff = Math.max(0, 1 - dist / followRadius); // 1 near mouse, 0 far
+                    // const force = falloff * followStrength;
+
+                    // if (force > 0.001) {
+                    //     const dir = mousePoint.clone().sub(particlePos).normalize();
+                    //     px += dir.x * force;
+                    //     py += dir.y * force;
+                    //     pz += dir.z * force;
+                    // }
+
+                    positions[i] = px;
+                    positions[i + 1] = py;
+                    positions[i + 2] = pz;
+                }
+
+                geometry.attributes.position.needsUpdate = true;
+            }
+            
             // console.log(time,'time')
             if (exploded && startTime !== null) {
                 
@@ -149,6 +208,7 @@ export default function Landing(scene,mount,mouse,camera,renderer,onClickExplore
                     startTime = null;
                     const event = createCustomEvent('onPageChangeFinished', {});
                     window.dispatchEvent(event);
+                    idleActive = true;
                 }
                 
                 // isMounted=false;

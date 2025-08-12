@@ -89,7 +89,7 @@ export default function Scene({hash}) {
 
   const onClickExplore = () => {
     window.location.hash = 'about';
-    console.log('Explore clicked');
+    // console.log('Explore clicked');
   }
 
   const init=()=>{

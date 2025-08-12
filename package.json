@@ -16,6 +16,7 @@
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
     "rehype-raw": "^7.0.0",
+    "simplex-noise": "^4.0.3",
     "swiper": "^11.2.10",
     "three": "^0.177.0",
     "three-stdlib": "^2.36.0",

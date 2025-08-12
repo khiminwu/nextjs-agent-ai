@@ -148,8 +148,8 @@ export default function Home() {
         <div id="content" className="w-full">
           {hash=='' &&(
             <div className="fixed top-[50%] md:top-[40%] h-[45%] mt-2 w-full justify-between flex flex-col text-center p-6 fadein delay opacity-0">
-              <h2 className="text-xl md:text-3xl font-bold">Your North Star in Digital Transformation</h2>
-              <a onClick={clickExplore} className={`text-sm md:text-lg cursor-pointer hover:opacity-50 mb-12 md:mb-4`}>EXPLORE</a>
+              <h2 className="text-xl md:text-3xl opacity-60 tracking-widest mt-16">Your North Star in Digital Transformation</h2>
+              {/* <a onClick={clickExplore} className={`text-sm md:text-lg cursor-pointer hover:opacity-50 mb-12 md:mb-4`}>EXPLORE</a> */}
             </div>
           )}
           {hash!='' && hash!='home' &&(
